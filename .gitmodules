@@ -1,0 +1,3 @@
+[submodule "kontena"]
+	path = kontena
+	url = https://github.com/kontena/kontena.git
