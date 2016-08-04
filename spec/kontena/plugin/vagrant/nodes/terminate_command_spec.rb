@@ -28,9 +28,16 @@ describe Kontena::Plugin::Vagrant::Nodes::TerminateCommand do
     end
 
     it 'passes options to provisioner' do
-      options = ['my-node']
+      options = ['--force', 'my-node']
       expect(subject).to receive(:destroyer).with(client).and_return(provisioner)
       expect(provisioner).to receive(:run!)
+      subject.run(options)
+    end
+
+    it 'asks confirmation without force' do
+      options = ['my-node']
+      expect(subject).to receive(:confirm_command)
+      allow(subject).to receive(:destroyer).with(client).and_return(provisioner)
       subject.run(options)
     end
   end
