@@ -13,13 +13,9 @@ module Kontena
         end
 
         def run!
-          if api_client.get("grids")['grids'].size > 0
-            abort("Cannot remove kontena-master because it has grids".colorize(:red))
-          end
-
           vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
           Dir.chdir(vagrant_path) do
-            ShellSpinner "Terminating Vagrant kontena-master " do
+            ShellSpinner "Terminating Kontena Master from Vagrant " do
               Open3.popen2('vagrant destroy -f') do |stdin, output, wait|
                 while o = output.gets
                   puts o if ENV['DEBUG']
