@@ -4,6 +4,7 @@ module Kontena::Plugin::Vagrant::Nodes
     include Kontena::Cli::GridOptions
 
     parameter "[NAME]", "Node name"
+    option "--instances", "AMOUNT", "How many nodes will be created", default: '1'
     option "--memory", "MEMORY", "How much memory node has", default: '1024'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
 
@@ -15,14 +16,17 @@ module Kontena::Plugin::Vagrant::Nodes
 
       grid = fetch_grid
       provisioner = provisioner(client(require_token))
-      provisioner.run!(
-        master_uri: api_url,
-        grid_token: grid['token'],
-        grid: current_grid,
-        name: name,
-        memory: memory,
-        version: version
-      )
+      instances.to_i.times do |i|
+        provisioner.run!(
+          master_uri: api_url,
+          grid_token: grid['token'],
+          grid: current_grid,
+          name: name,
+          instance_number: i + 1,
+          memory: memory,
+          version: version
+        )
+      end
     end
 
     # @param [Kontena::Client] client

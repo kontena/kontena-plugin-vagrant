@@ -18,7 +18,11 @@ module Kontena
 
         def run!(opts)
           grid = opts[:grid]
-          name = opts[:name] || generate_name
+          if opts[:name]
+            name = "#{opts[:name]}-#{opts[:instance_number]}"
+          else
+            name = generate_name
+          end
           version = opts[:version]
           vagrant_path = "#{Dir.home}/.kontena/#{grid}/#{name}"
           FileUtils.mkdir_p(vagrant_path)
