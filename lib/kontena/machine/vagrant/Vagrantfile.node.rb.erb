@@ -20,6 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     docker.vm.network "private_network", type: "dhcp"
     docker.vm.hostname = "<%= name %>"
     docker.vm.provider "virtualbox" do |vb|
+      vb.name = "<%= name %>"
       vb.gui = false
       vb.customize ["modifyvm", :id, "--memory", "<%= memory %>"]
       vb.auto_nat_dns_proxy = false
