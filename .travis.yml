@@ -5,8 +5,4 @@ rvm:
   - 2.2.3
   - 2.3.1
 cache: bundler
-env:
-  - TEST_DIR=server
-  - TEST_DIR=agent
-  - TEST_DIR=cli
 script: bundle install && bundle exec rspec spec/
