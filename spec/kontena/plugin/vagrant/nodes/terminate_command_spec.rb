@@ -17,6 +17,7 @@ describe Kontena::Plugin::Vagrant::Nodes::TerminateCommand do
 
   describe '#run' do
     before(:each) do
+      allow(subject).to receive(:require_api_url).and_return('https://localhost')
       allow(subject).to receive(:require_current_grid).and_return('test-grid')
       allow(subject).to receive(:client).and_return(client)
     end
