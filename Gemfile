@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem "kontena-cli", ">= 0.15.0.rc1"
+  gem "kontena-cli", "~> 0.15.0.rc1"
   gem "vagrant", git: "https://github.com/mitchellh/vagrant.git"
   gem 'rspec'
 end
