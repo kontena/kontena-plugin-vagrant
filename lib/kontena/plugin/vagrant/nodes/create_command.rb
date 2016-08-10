@@ -9,7 +9,7 @@ module Kontena::Plugin::Vagrant::Nodes
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
 
     def execute
-      require_api_url
+      api_url = require_api_url
       require_current_grid
 
       require_relative '../../../machine/vagrant'
