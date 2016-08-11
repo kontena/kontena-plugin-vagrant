@@ -72,3 +72,4 @@ coreos:
             -v=/etc/kontena-agent.env:/etc/kontena.env \
             --net=host \
             kontena/agent:${KONTENA_VERSION}
+        ExecStop=/usr/bin/docker stop kontena-agent
