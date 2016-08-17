@@ -3,9 +3,10 @@ require 'securerandom'
 module Kontena::Plugin::Vagrant::Master
   class CreateCommand < Kontena::Command
 
+    command_type :provision_master
+
     option "--memory", "MEMORY", "How much memory node has", default: '512'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
-    option "--auth-provider-url", "AUTH_PROVIDER_URL", "Define authentication provider url"
     option "--vault-secret", "VAULT_SECRET", "Secret key for Vault"
     option "--vault-iv", "VAULT_IV", "Initialization vector for Vault"
 
@@ -14,9 +15,9 @@ module Kontena::Plugin::Vagrant::Master
       provisioner.run!(
         memory: memory,
         version: version,
-        auth_server: auth_provider_url,
         vault_secret: vault_secret || SecureRandom.hex(24),
-        vault_iv: vault_iv || SecureRandom.hex(24)
+        vault_iv: vault_iv || SecureRandom.hex(24),
+        initial_admin_code: SecureRandom.hex(16)
       )
     end
 

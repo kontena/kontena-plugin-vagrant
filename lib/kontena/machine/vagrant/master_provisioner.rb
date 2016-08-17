@@ -21,9 +21,9 @@ module Kontena
           name = generate_name
           version = opts[:version]
           memory = opts[:memory] || 1024
-          auth_server = opts[:auth_server]
           vault_secret = opts[:vault_secret]
           vault_iv = opts[:vault_iv]
+          initial_admin_code = opts[:initial_admin_code]
           vagrant_path = "#{Dir.home}/.kontena/vagrant_master/"
           if Dir.exist?(vagrant_path)
             puts "Oops... cannot create Kontena Master because installation path already exists."
@@ -36,10 +36,11 @@ module Kontena
           cloudinit_template = File.join(__dir__ , '/cloudinit.yml')
           vars = {
             name: name,
+            server_name: name.sub('kontena-master-', ''),
             version: version,
             memory: memory,
-            auth_server: auth_server,
             vault_secret: vault_secret,
+            initial_admin_code: initial_admin_code,
             vault_iv: vault_iv,
             cloudinit: "#{vagrant_path}/cloudinit.yml"
           }
@@ -58,9 +59,13 @@ module Kontena
             ShellSpinner "Waiting for #{name.colorize(:cyan)} to start " do
               sleep 1 until master_running?
             end
-            puts "Kontena Master is now running at #{API_URL}"
-            puts "Use #{"kontena login --name #{name.sub('kontena-master-', '')} #{API_URL}".colorize(:light_black)} to complete Kontena Master setup"
+            puts "Kontena Master is now running at #{API_URL}".colorize(:green)
           end
+          {
+            name: name.sub('kontena-master-', ''),
+            public_ip: API_URL.split('//').last,
+            code: opts[:initial_admin_code]
+          }
         end
 
         def erb(template, vars)
