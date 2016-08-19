@@ -3,8 +3,6 @@ require 'securerandom'
 module Kontena::Plugin::Vagrant::Master
   class CreateCommand < Kontena::Command
 
-    command_type :provision_master
-
     option "--memory", "MEMORY", "How much memory node has", default: '512'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
     option "--vault-secret", "VAULT_SECRET", "Secret key for Vault"
