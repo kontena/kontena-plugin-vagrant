@@ -41,6 +41,7 @@ coreos:
         ExecStart=/usr/bin/docker run --name=kontena-server-mongo \
             --volumes-from=kontena-server-mongo-data \
             mongo:3.0 mongod --smallfiles
+        ExecStop=/usr/bin/docker stop kontena-server-mongo
 
     - name: kontena-server-api.service
       command: start
@@ -71,6 +72,7 @@ coreos:
             <% if auth_server %>-e AUTH_API_URL=<%= auth_server %><% end %> \
             -p 8080:9292 \
             kontena/server:${KONTENA_VERSION}
+        ExecStop=/usr/bin/docker stop kontena-server-api
 INIT
 
 cloud_init_file = Tempfile.new('kontena-master')
