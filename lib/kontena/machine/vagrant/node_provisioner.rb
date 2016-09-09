@@ -35,6 +35,7 @@ module Kontena
             memory: opts[:memory] || 1024,
             master_uri: opts[:master_uri],
             grid_token: opts[:grid_token],
+            coreos_channel: opts[:coreos_channel],
             cloudinit: "#{vagrant_path}/cloudinit.yml"
           }
           vagrant_data = erb(File.read(template), vars)
