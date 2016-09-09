@@ -1,13 +1,13 @@
 require 'fileutils'
 require 'erb'
 require 'open3'
-require 'shell-spinner'
 
 module Kontena
   module Machine
     module Vagrant
       class NodeProvisioner
         include RandomName
+        include Kontena::Cli::ShellSpinner
 
         attr_reader :client, :api_client
 
@@ -43,15 +43,15 @@ module Kontena
           File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
           node = nil
           Dir.chdir(vagrant_path) do
-            ShellSpinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
+            spinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
               Open3.popen2('vagrant up') do |stdin, output, wait|
                 while o = output.gets
                   print o if ENV['DEBUG']
                 end
               end
             end
-            ShellSpinner "Waiting for node #{name.colorize(:cyan)} join to grid #{grid.colorize(:cyan)} " do
-              sleep 1 until node = node_exists_in_grid?(grid, name)
+            spinner "Waiting for node #{name.colorize(:cyan)} join to grid #{grid.colorize(:cyan)} " do
+              sleep 1 until node_exists_in_grid?(grid, name)
             end
           end
           set_labels(

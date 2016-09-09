@@ -5,6 +5,8 @@ module Kontena
     module Vagrant
       class MasterDestroyer
 
+        include Kontena::Cli::ShellSpinner
+
         attr_reader :client, :api_client
 
         # @param [Kontena::Client] api_client Kontena api client
@@ -15,7 +17,7 @@ module Kontena
         def run!
           vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
           Dir.chdir(vagrant_path) do
-            ShellSpinner "Terminating Kontena Master from Vagrant " do
+            spinner "Terminating Kontena Master from Vagrant " do
               Open3.popen2('vagrant destroy -f') do |stdin, output, wait|
                 while o = output.gets
                   puts o if ENV['DEBUG']

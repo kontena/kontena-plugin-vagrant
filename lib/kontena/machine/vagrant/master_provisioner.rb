@@ -1,7 +1,6 @@
 require 'fileutils'
 require 'erb'
 require 'open3'
-require 'shell-spinner'
 
 module Kontena
   module Machine
@@ -9,6 +8,7 @@ module Kontena
       class MasterProvisioner
         include RandomName
         include Kontena::Machine::Common
+        include Kontena::Cli::ShellSpinner
 
         API_URL = 'http://192.168.66.100:8080'
         attr_reader :client
@@ -49,18 +49,23 @@ module Kontena
           File.write("#{vagrant_path}/Vagrantfile", vagrant_data)
           File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
           Dir.chdir(vagrant_path) do
-            ShellSpinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
+            spinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
               Open3.popen2("vagrant up") do |stdin, output, wait|
                 while o = output.gets
                   print o if ENV['DEBUG']
                 end
               end
             end
-            ShellSpinner "Waiting for #{name.colorize(:cyan)} to start " do
-              sleep 1 until master_running?
-            end
-            puts "Kontena Master is now running at #{API_URL}".colorize(:green)
           end
+
+          spinner "Waiting for #{name.colorize(:cyan)} to start " do
+            sleep 1 until master_running?
+          end
+
+          puts
+          puts "Kontena Master is now running at #{API_URL}".colorize(:green)
+          puts
+
           {
             name: name.sub('kontena-master-', ''),
             public_ip: API_URL.split('//').last,
