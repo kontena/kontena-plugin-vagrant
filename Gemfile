@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 group :development do
-  gem "kontena-cli", "~> 0.15.0.rc1"
+  gem "kontena-cli", "~> 0.16.0.pre2"
   gem "listen", "~> 3.0.8"
   gem "rspec"
 end
