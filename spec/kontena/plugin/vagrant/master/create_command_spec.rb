@@ -15,7 +15,9 @@ describe Kontena::Plugin::Vagrant::Master::CreateCommand do
 
     it 'passes options to provisioner' do
       options = [
-        '--memory', '1024'
+        '--memory', '1024',
+        '--no-prompt',
+        '--skip-auth-provider'
       ]
       expect(subject).to receive(:provisioner).and_return(provisioner)
       expect(provisioner).to receive(:run!).with(
