@@ -8,6 +8,7 @@ module Kontena
       class MasterProvisioner
         include RandomName
         include Kontena::Machine::Common
+        include Kontena::Cli::Common
         include Kontena::Cli::ShellSpinner
 
         API_URL = 'http://192.168.66.100:8080'
@@ -61,10 +62,7 @@ module Kontena
           spinner "Waiting for #{name.colorize(:cyan)} to start " do
             sleep 1 until master_running?
           end
-
-          puts
-          puts "Kontena Master is now running at #{API_URL}".colorize(:green)
-          puts
+          vspinner "Kontena Master is now running at #{API_URL}"
 
           {
             name: name.sub('kontena-master-', ''),
