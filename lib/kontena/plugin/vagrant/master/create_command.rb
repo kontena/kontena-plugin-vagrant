@@ -17,7 +17,7 @@ module Kontena::Plugin::Vagrant::Master
         version: version,
         vault_secret: vault_secret || SecureRandom.hex(24),
         vault_iv: vault_iv || SecureRandom.hex(24),
-        initial_admin_code: SecureRandom.hex(16)
+        initial_admin_code: SecureRandom.hex(16),
         coreos_channel: coreos_channel
       )
     end
