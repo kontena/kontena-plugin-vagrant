@@ -7,13 +7,6 @@ module Kontena
 
         include Kontena::Cli::ShellSpinner
 
-        attr_reader :client, :api_client
-
-        # @param [Kontena::Client] api_client Kontena api client
-        def initialize(api_client)
-          @api_client = api_client
-        end
-
         def run!
           vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
           Dir.chdir(vagrant_path) do
