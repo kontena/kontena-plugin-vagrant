@@ -7,6 +7,7 @@ module Kontena::Plugin::Vagrant::Nodes
     option "--instances", "AMOUNT", "How many nodes will be created", default: '1'
     option "--memory", "MEMORY", "How much memory node has", default: '1024'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
+    option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
 
     def execute
       api_url = require_api_url
@@ -24,7 +25,8 @@ module Kontena::Plugin::Vagrant::Nodes
           name: name,
           instance_number: i + 1,
           memory: memory,
-          version: version
+          version: version,
+          coreos_channel: coreos_channel
         )
       end
     end

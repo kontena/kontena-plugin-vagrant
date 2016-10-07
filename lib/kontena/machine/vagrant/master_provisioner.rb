@@ -25,6 +25,7 @@ module Kontena
           vault_secret = opts[:vault_secret]
           vault_iv = opts[:vault_iv]
           initial_admin_code = opts[:initial_admin_code]
+          coreos_channel = opts[:coreos_channel]
           vagrant_path = "#{Dir.home}/.kontena/vagrant_master/"
           if Dir.exist?(vagrant_path)
             puts "Oops... cannot create Kontena Master because installation path already exists."
@@ -43,6 +44,7 @@ module Kontena
             vault_secret: vault_secret,
             initial_admin_code: initial_admin_code,
             vault_iv: vault_iv,
+            coreos_channel: coreos_channel,
             cloudinit: "#{vagrant_path}/cloudinit.yml"
           }
           vagrant_data = erb(File.read(template), vars)
