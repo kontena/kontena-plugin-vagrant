@@ -9,6 +9,7 @@ env:
 cache: vendor/bundle
 script: bundle install --path vendor/bundle && bundle exec rspec spec/
 before_install:
+  - gem uninstall -a bundler
   - gem install bundler -v 1.12.5
 deploy:
   provider: rubygems
