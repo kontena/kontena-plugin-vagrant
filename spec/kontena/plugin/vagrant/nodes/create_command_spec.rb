@@ -26,7 +26,7 @@ describe Kontena::Plugin::Vagrant::Nodes::CreateCommand do
 
     it 'passes options to provisioner' do
       options = [
-        '--memory', '1024',
+        '--memory', '1024', '--instances', '1'
       ]
       expect(subject).to receive(:provisioner).with(client).and_return(provisioner)
       expect(provisioner).to receive(:run!).with(
