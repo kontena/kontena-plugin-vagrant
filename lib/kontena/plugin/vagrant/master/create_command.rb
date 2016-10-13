@@ -9,7 +9,7 @@ module Kontena::Plugin::Vagrant::Master
     option "--vault-secret", "VAULT_SECRET", "Secret key for Vault"
     option "--vault-iv", "VAULT_IV", "Initialization vector for Vault"
     option "--name", "NAME", "Set Master name"
-    option "--coreos-channel", "CHANNEL", "CoreOS release channel"
+    option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
 
     def execute
       require_relative '../../../machine/vagrant'
