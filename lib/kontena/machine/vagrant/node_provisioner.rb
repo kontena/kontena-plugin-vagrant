@@ -51,7 +51,7 @@ module Kontena
                 end
               end
             end
-            spinner "Waiting for node #{name.colorize(:cyan)} join to grid #{grid.colorize(:cyan)} " do
+            spinner "Waiting for node #{name.colorize(:cyan)} to join grid #{grid.colorize(:cyan)} " do
               sleep 1 until node = node_exists_in_grid?(grid, name)
             end
           end
