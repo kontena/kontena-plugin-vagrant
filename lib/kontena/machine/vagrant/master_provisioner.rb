@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'erb'
 require 'open3'
+require 'json'
 
 module Kontena
   module Machine
@@ -64,11 +65,19 @@ module Kontena
           spinner "Waiting for #{name.colorize(:cyan)} to start " do
             sleep 1 until master_running?
           end
-          vspinner "Kontena Master is now running at #{API_URL}"
+
+          master_version = nil
+          spinner "Retrieving Kontena Master version" do
+            master_version = JSON.parse(client.get(path: '/'))["version"] rescue nil
+          end
+
+          spinner "Kontena Master #{master_version} is now running at #{API_URL}"
 
           {
             name: name.sub('kontena-master-', ''),
             public_ip: API_URL.split('//').last,
+            provider: 'vagrant',
+            version: master_version,
             code: opts[:initial_admin_code]
           }
         end
