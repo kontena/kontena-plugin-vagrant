@@ -11,7 +11,7 @@ write_files:
   - path: /etc/systemd/system/docker.service.d/50-kontena.conf
     content: |
         [Service]
-        Environment='DOCKER_OPTS=--insecure-registry="10.81.0.0/19" --bip="172.17.43.1/16"'
+        Environment='DOCKER_OPTS=--insecure-registry="10.81.0.0/16" --bip="172.17.43.1/16"'
         Environment='DOCKER_CGROUPS=--exec-opt native.cgroupdriver=cgroupfs'
   - path: /etc/sysctl.d/99-inotify.conf
     owner: root
