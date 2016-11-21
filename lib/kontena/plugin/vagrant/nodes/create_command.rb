@@ -27,7 +27,7 @@ module Kontena::Plugin::Vagrant::Nodes
           grid: current_grid,
           name: name,
           instance_number: i + 1,
-          memory: memory,
+          memory: instance_memory,
           version: version,
           coreos_channel: coreos_channel
         )
