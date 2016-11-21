@@ -2,7 +2,6 @@ module Kontena::Plugin::Vagrant::Nodes
   class StopCommand < Clamp::Command
     include Kontena::Cli::Common
     include Kontena::Cli::GridOptions
-    include Kontena::Cli::ShellSpinner
 
     parameter "NAME", "Node name"
 

@@ -1,7 +1,6 @@
 module Kontena::Plugin::Vagrant::Master
   class StartCommand < Kontena::Command
     include Kontena::Cli::Common
-    include Kontena::Cli::ShellSpinner
 
     def execute
       require_relative '../../../machine/vagrant'
