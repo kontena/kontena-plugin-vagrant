@@ -31,7 +31,7 @@ module Kontena
           node = api_client.get("grids/#{grid}/nodes")['nodes'].find{|n| n['name'] == name}
           if node
             spinner "Removing node #{name.colorize(:cyan)} from grid #{grid.colorize(:cyan)} " do
-              api_client.delete("grids/#{grid}/nodes/#{name}")
+              api_client.delete("nodes/#{grid}/#{name}")
             end
           end
         end
