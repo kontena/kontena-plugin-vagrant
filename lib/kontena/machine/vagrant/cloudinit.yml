@@ -45,14 +45,23 @@ coreos:
         Restart=always
         RestartSec=5
         ExecStart=/usr/bin/docker logs --tail=10 -f kontena-etcd
-    - name: 10-weave.network
+    - name: 50-docker.network
+      mask: true
+    - name: 50-docker-veth.network
+      mask: true
+    - name: zz-default.network
       runtime: false
       content: |
+        # default should only match real network interfaces
         [Match]
-        Type=bridge
-        Name=weave*
+        Name=eth*
 
         [Network]
+        DHCP=yes
+
+        [DHCP]
+        UseMTU=true
+        UseDomains=true
     - name: kontena-agent.service
       command: start
       enable: true
