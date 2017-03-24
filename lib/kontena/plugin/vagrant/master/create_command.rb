@@ -15,6 +15,7 @@ module Kontena::Plugin::Vagrant::Master
       require_relative '../../../machine/vagrant'
       mem = ask_instance_memory
       provisioner.run!(
+        name: name,
         memory: mem,
         version: version,
         vault_secret: vault_secret || SecureRandom.hex(24),
