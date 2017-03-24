@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in kontena-plugin-aws.gemspec
+# Specify your gem's dependencies in kontena-plugin-vagrant.gemspec
 gemspec
 
 group :development do
