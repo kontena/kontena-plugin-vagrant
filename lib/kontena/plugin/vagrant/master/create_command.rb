@@ -4,18 +4,18 @@ module Kontena::Plugin::Vagrant::Master
   class CreateCommand < Kontena::Command
     include Kontena::Cli::Common
 
-    option "--name", "[NAME]", "Set master name"
+    option "--name", "NAME", "Set master name"
     option "--memory", "MEMORY", "How much memory node has"
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
     option "--vault-secret", "VAULT_SECRET", "Secret key for Vault"
     option "--vault-iv", "VAULT_IV", "Initialization vector for Vault"
-    option "--name", "NAME", "Set Master name"
     option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
 
     def execute
       require_relative '../../../machine/vagrant'
       mem = ask_instance_memory
       provisioner.run!(
+        name: name,
         memory: mem,
         version: version,
         vault_secret: vault_secret || SecureRandom.hex(24),
