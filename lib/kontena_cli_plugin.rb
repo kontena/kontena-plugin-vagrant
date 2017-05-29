@@ -1,5 +1,5 @@
 require 'kontena_cli'
-require_relative 'kontena/plugin/vagrant'
-require_relative 'kontena/plugin/vagrant_command'
+require 'kontena/plugin/vagrant'
+require 'kontena/cli/subcommand_loader'
 
-Kontena::MainCommand.register("vagrant", "Vagrant specific commands", Kontena::Plugin::VagrantCommand)
+Kontena::MainCommand.register("vagrant", "Vagrant specific commands", Kontena::Cli::SubcommandLoader.new('kontena/plugin/vagrant_command'))

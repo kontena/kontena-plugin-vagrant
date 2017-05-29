@@ -12,7 +12,7 @@ module Kontena::Plugin::Vagrant::Nodes
 
       confirm_command("#{current_grid}/#{name}") unless forced?
 
-      require_relative '../../../machine/vagrant'
+      require 'kontena/machine/vagrant'
 
       destroyer = destroyer(client(require_token))
       destroyer.run!(current_grid, name)

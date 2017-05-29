@@ -1,5 +1,3 @@
-require 'securerandom'
-
 module Kontena::Plugin::Vagrant::Master
   class CreateCommand < Kontena::Command
     include Kontena::Cli::Common
@@ -12,7 +10,8 @@ module Kontena::Plugin::Vagrant::Master
     option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
 
     def execute
-      require_relative '../../../machine/vagrant'
+      require 'securerandom'
+      require 'kontena/machine/vagrant'
       mem = ask_instance_memory
       provisioner.run!(
         name: name,

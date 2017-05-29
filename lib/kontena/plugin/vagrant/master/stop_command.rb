@@ -3,8 +3,8 @@ module Kontena::Plugin::Vagrant::Master
     include Kontena::Cli::Common
 
     def execute
-      require_relative '../../../machine/vagrant'
-      
+      require 'kontena/machine/vagrant'
+
       vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
       abort("Cannot find Vagrant kontena-master".colorize(:red)) unless Dir.exist?(vagrant_path)
       Dir.chdir(vagrant_path) do

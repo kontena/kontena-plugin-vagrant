@@ -6,7 +6,7 @@ module Kontena::Plugin::Vagrant::Master
 
     def execute
       confirm unless forced?
-      require_relative '../../../machine/vagrant'
+      require 'kontena/machine/vagrant'
       Kontena::Machine::Vagrant::MasterDestroyer.new.run!
     end
   end

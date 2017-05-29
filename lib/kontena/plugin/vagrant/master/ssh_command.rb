@@ -6,7 +6,7 @@ module Kontena::Plugin::Vagrant::Master
 
     def execute
       require 'shellwords'
-      require_relative '../../../machine/vagrant'
+      require 'kontena/machine/vagrant'
 
       vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
       abort("Cannot find Vagrant kontena-master".colorize(:red)) unless Dir.exist?(vagrant_path)

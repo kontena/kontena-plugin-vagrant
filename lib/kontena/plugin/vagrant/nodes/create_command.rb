@@ -16,7 +16,7 @@ module Kontena::Plugin::Vagrant::Nodes
       instance_count = ask_instances
       instance_memory = ask_instance_memory
 
-      require_relative '../../../machine/vagrant'
+      require 'kontena/machine/vagrant'
 
       grid = fetch_grid
       provisioner = provisioner(client(require_token))
