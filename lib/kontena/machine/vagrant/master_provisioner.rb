@@ -1,7 +1,4 @@
-require 'fileutils'
-require 'erb'
-require 'open3'
-require 'json'
+require_relative 'common'
 
 module Kontena
   module Machine
@@ -9,6 +6,7 @@ module Kontena
       class MasterProvisioner
         include RandomName
         include Kontena::Machine::Common
+        include Kontena::Machine::Vagrant::Common
         include Kontena::Cli::Common
         include Kontena::Cli::ShellSpinner
 
@@ -48,18 +46,19 @@ module Kontena
             coreos_channel: coreos_channel,
             cloudinit: "#{vagrant_path}/cloudinit.yml"
           }
-          vagrant_data = erb(File.read(template), vars)
-          cloudinit = erb(File.read(cloudinit_template), vars)
-          File.write("#{vagrant_path}/Vagrantfile", vagrant_data)
-          File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
+          spinner "Creating Vagrant config " do
+            vagrant_data = erb(File.read(template), vars)
+            cloudinit = erb(File.read(cloudinit_template), vars)
+            File.write("#{vagrant_path}/Vagrantfile", vagrant_data)
+            File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
+          end
+
           Dir.chdir(vagrant_path) do
-            spinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
-              Open3.popen2("vagrant up") do |stdin, output, wait|
-                while o = output.gets
-                  print o if ENV['DEBUG']
-                end
-              end
-            end
+            spinner "Triggering CoreOS Container Linux box update"
+            run_command('vagrant box update')
+            spinner "Executing 'vagrant up'"
+            run_command('vagrant up')
+            spinner "'vagrant up' executed successfully"
           end
 
           spinner "Waiting for #{name.colorize(:cyan)} to start " do
@@ -67,7 +66,7 @@ module Kontena
           end
 
           master_version = nil
-          spinner "Retrieving Kontena Master version" do
+          spinner "Retrieving #{name.colorize(:cyan)} version" do
             master_version = JSON.parse(client.get(path: '/'))["version"] rescue nil
           end
 
@@ -80,10 +79,6 @@ module Kontena
             version: master_version,
             code: opts[:initial_admin_code]
           }
-        end
-
-        def erb(template, vars)
-          ERB.new(template).result(OpenStruct.new(vars).instance_eval { binding })
         end
 
         def master_running?

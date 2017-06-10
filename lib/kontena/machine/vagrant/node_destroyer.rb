@@ -1,10 +1,11 @@
-require 'fileutils'
+require_relative 'common'
 
 module Kontena
   module Machine
     module Vagrant
       class NodeDestroyer
         include RandomName
+        include Kontena::Machine::Vagrant::Common
         include Kontena::Cli::ShellSpinner
 
         attr_reader :client, :api_client
@@ -17,16 +18,9 @@ module Kontena
         def run!(grid, name)
           vagrant_path = "#{Dir.home}/.kontena/#{grid}/#{name}"
           Dir.chdir(vagrant_path) do
-            spinner "Terminating Vagrant machine #{name.colorize(:cyan)} " do
-              Open3.popen2('vagrant destroy -f') do |stdin, output, wait|
-                while o = output.gets
-                  puts o if ENV['DEBUG']
-                end
-                if wait.value == 0
-                  FileUtils.remove_entry_secure(vagrant_path)
-                end
-              end
-            end
+            spinner "Triggering termination of Vagrant machine #{name.colorize(:cyan)}"
+            run_command('vagrant destroy -f')
+            FileUtils.remove_entry_secure(vagrant_path)
           end
           node = api_client.get("grids/#{grid}/nodes")['nodes'].find{|n| n['name'] == name}
           if node
