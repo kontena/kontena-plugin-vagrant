@@ -17,7 +17,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "<%= name %>" do |docker|
     docker.vm.box = "coreos-<%= coreos_channel %>"
     docker.vm.box_url = "http://stable.release.core-os.net/amd64-usr/current/coreos_production_vagrant.json"
+    <% if network_address == "dhcp" %>
     docker.vm.network "private_network", type: "dhcp"
+    <% else  %>
+    docker.vm.network "private_network", ip: "<%= network_address %>"
+    <% end %>
     docker.vm.hostname = "<%= name %>"
     docker.vm.provider "virtualbox" do |vb|
       vb.name = "<%= name %>"

@@ -6,6 +6,7 @@ module Kontena::Plugin::Vagrant::Nodes
     parameter "[NAME]", "Node name"
     option "--instances", "AMOUNT", "How many nodes will be created"
     option "--memory", "MEMORY", "How much memory node has"
+    option "--network-address", "IP", "First IP address for the node(s)", default: 'dhcp'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
     option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
 
@@ -20,6 +21,14 @@ module Kontena::Plugin::Vagrant::Nodes
 
       grid = fetch_grid
       provisioner = provisioner(client(require_token))
+
+      require 'ipaddr'
+      ip_address = if network_address == "dhcp"
+        nil
+      else
+        IPAddr.new network_address
+      end
+
       instance_count.to_i.times do |i|
         provisioner.run!(
           master_uri: api_url,
@@ -27,10 +36,13 @@ module Kontena::Plugin::Vagrant::Nodes
           grid: current_grid,
           name: name,
           instance_number: i + 1,
+          network_address: ip_address ? ip_address.to_s : "dhcp",
           memory: instance_memory,
           version: version,
           coreos_channel: coreos_channel
         )
+
+        ip_address = ip_address.succ if ip_address
       end
     end
 

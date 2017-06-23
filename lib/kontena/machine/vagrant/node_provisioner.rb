@@ -33,6 +33,7 @@ module Kontena
             name: name,
             version: version,
             memory: opts[:memory] || 1024,
+            network_address: opts[:network_address],
             master_uri: opts[:master_uri],
             grid_token: opts[:grid_token],
             coreos_channel: opts[:coreos_channel],
