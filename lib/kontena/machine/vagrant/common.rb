@@ -13,9 +13,7 @@ module Kontena
         end
 
         def run_command(cmd)
-          system(cmd)
-          exit_code = $?
-          exit exit_code if exit_code != 0
+          exit $?.exitstatus unless system(cmd)
         end
       end
     end
