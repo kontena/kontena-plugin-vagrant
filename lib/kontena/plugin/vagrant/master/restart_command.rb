@@ -9,9 +9,7 @@ module Kontena::Plugin::Vagrant::Master
       abort("Cannot find Vagrant kontena-master".colorize(:red)) unless Dir.exist?(vagrant_path)
       Dir.chdir(vagrant_path) do
         spinner "Executing 'vagrant reload' for kontena-master"
-        system('vagrant reload')
-        exit_code = $?
-        exit exit_code if exit_code != 0
+        exit $?.exitstatus unless system('vagrant reload')
         spinner "Vagrant machine restarted"
       end
     end

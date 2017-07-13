@@ -15,9 +15,7 @@ module Kontena::Plugin::Vagrant::Nodes
       abort("Cannot find Vagrant node #{name}".colorize(:red)) unless Dir.exist?(vagrant_path)
       Dir.chdir(vagrant_path) do
         spinner "Triggering 'vagrant reload' for #{name.colorize(:cyan)}"
-        system('vagrant reload')
-        exit_code = $?
-        exit exit_code if exit_code != 0
+        exit $?.exitstatus unless system('vagrant reload')
       end
     end
   end
