@@ -34,13 +34,16 @@ coreos:
         [Service]
         Restart=always
         RestartSec=5
-        ExecStartPre=/usr/bin/docker pull mongo:3.0
-        ExecStartPre=-/usr/bin/docker create --name=kontena-server-mongo-data mongo:3.0
+        TimeoutStartSec=0
+        ExecStartPre=/usr/bin/docker pull mongo:3.2
+        ExecStartPre=-/usr/bin/docker network create kontena
+        ExecStartPre=-/usr/bin/docker volume create kontena-server-mongo
         ExecStartPre=-/usr/bin/docker stop kontena-server-mongo
         ExecStartPre=-/usr/bin/docker rm kontena-server-mongo
         ExecStart=/usr/bin/docker run --name=kontena-server-mongo \
-            --volumes-from=kontena-server-mongo-data \
-            mongo:3.0 mongod --smallfiles
+            -v kontena-server-mongo:/data \
+            --network kontena \
+            mongo:3.2
         ExecStop=/usr/bin/docker stop kontena-server-mongo
 
     - name: kontena-server-api.service
@@ -61,16 +64,18 @@ coreos:
         [Service]
         Restart=always
         RestartSec=5
+        TimeoutStartSec=0
         EnvironmentFile=/etc/kontena-server.env
         ExecStartPre=-/usr/bin/docker stop kontena-server-api
         ExecStartPre=-/usr/bin/docker rm kontena-server-api
+        ExecStartPre=-/usr/bin/docker network create kontena
         ExecStartPre=/usr/bin/docker pull kontena/server:${KONTENA_VERSION}
         ExecStart=/usr/bin/docker run --name kontena-server-api \
-            --link kontena-server-mongo:mongodb \
-            -e MONGODB_URI=mongodb://mongodb:27017/kontena_server \
+            -e MONGODB_URI=mongodb://kontena-server-mongo:27017/kontena_server \
             -e VAULT_KEY=${KONTENA_VAULT_KEY} -e VAULT_IV=${KONTENA_VAULT_IV} \
             <% if server_name %>-e SERVER_NAME=<%= server_name %><% end %> \
             <% if initial_admin_code %>-e INITIAL_ADMIN_CODE=<%= initial_admin_code %><% end %> \
+            --network kontena \
             -p 8080:9292 \
             kontena/server:${KONTENA_VERSION}
         ExecStop=/usr/bin/docker stop kontena-server-api
