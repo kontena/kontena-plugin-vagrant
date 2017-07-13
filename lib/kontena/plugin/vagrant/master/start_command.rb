@@ -9,11 +9,9 @@ module Kontena::Plugin::Vagrant::Master
       abort("Cannot find Vagrant node kontena-master".colorize(:red)) unless Dir.exist?(vagrant_path)
       Dir.chdir(vagrant_path) do
         spinner "Triggering 'vagrant up' for kontena-master"
-        Open3.popen2('vagrant up') do |stdin, output, wait|
-          while o = output.gets
-            $stdout << o
-          end
-        end
+        system('vagrant up')
+        exit_code = $?
+        exit exit_code if exit_code != 0
       end
     end
   end
