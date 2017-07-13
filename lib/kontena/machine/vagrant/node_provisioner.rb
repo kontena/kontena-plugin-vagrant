@@ -1,12 +1,10 @@
-require 'fileutils'
-require 'erb'
-require 'open3'
-
+require_relative 'common'
 module Kontena
   module Machine
     module Vagrant
       class NodeProvisioner
         include RandomName
+        include Kontena::Machine::Vagrant::Common
         include Kontena::Cli::ShellSpinner
 
         attr_reader :client, :api_client
@@ -38,19 +36,20 @@ module Kontena
             coreos_channel: opts[:coreos_channel],
             cloudinit: "#{vagrant_path}/cloudinit.yml"
           }
-          vagrant_data = erb(File.read(template), vars)
-          cloudinit = erb(File.read(cloudinit_template), vars)
-          File.write("#{vagrant_path}/Vagrantfile", vagrant_data)
-          File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
+          spinner "Generating Vagrant config" do
+            vagrant_data = erb(File.read(template), vars)
+            cloudinit = erb(File.read(cloudinit_template), vars)
+            File.write("#{vagrant_path}/Vagrantfile", vagrant_data)
+            File.write("#{vagrant_path}/cloudinit.yml", cloudinit)
+          end
+
           node = nil
           Dir.chdir(vagrant_path) do
-            spinner "Creating Vagrant machine #{name.colorize(:cyan)} " do
-              Open3.popen2('vagrant up') do |stdin, output, wait|
-                while o = output.gets
-                  print o if ENV['DEBUG']
-                end
-              end
-            end
+            spinner "Triggering CoreOS Container Linux box update"
+            run_command('vagrant box update')
+            spinner "Executing 'vagrant up'"
+            run_command('vagrant up')
+            spinner "'vagrant up' executed successfully"
             spinner "Waiting for node #{name.colorize(:cyan)} to join grid #{grid.colorize(:cyan)} " do
               sleep 1 until node = node_exists_in_grid?(grid, name)
             end
@@ -65,10 +64,6 @@ module Kontena
 
         def generate_name
           "#{super}-#{rand(1..99)}"
-        end
-
-        def erb(template, vars)
-          ERB.new(template).result(OpenStruct.new(vars).instance_eval { binding })
         end
 
         def node_exists_in_grid?(grid, name)

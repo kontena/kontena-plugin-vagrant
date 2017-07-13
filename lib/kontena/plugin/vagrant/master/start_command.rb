@@ -4,17 +4,12 @@ module Kontena::Plugin::Vagrant::Master
 
     def execute
       require_relative '../../../machine/vagrant'
-      
+
       vagrant_path = "#{Dir.home}/.kontena/vagrant_master"
       abort("Cannot find Vagrant node kontena-master".colorize(:red)) unless Dir.exist?(vagrant_path)
       Dir.chdir(vagrant_path) do
-        spinner "Starting Vagrant machine kontena-master " do
-          Open3.popen2('vagrant up') do |stdin, output, wait|
-            while o = output.gets
-              print o if ENV['DEBUG']
-            end
-          end
-        end
+        spinner "Triggering 'vagrant up' for kontena-master"
+        exit $?.exitstatus unless system('vagrant up')
       end
     end
   end
