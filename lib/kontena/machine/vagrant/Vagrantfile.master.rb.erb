@@ -41,7 +41,7 @@ coreos:
         ExecStartPre=-/usr/bin/docker stop kontena-server-mongo
         ExecStartPre=-/usr/bin/docker rm kontena-server-mongo
         ExecStart=/usr/bin/docker run --name=kontena-server-mongo \
-            -v kontena-server-mongo:/data \
+            -v kontena-server-mongo:/data/db \
             --network kontena \
             mongo:3.2
         ExecStop=/usr/bin/docker stop kontena-server-mongo
