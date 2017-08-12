@@ -47,7 +47,7 @@ module Kontena
           node = nil
           Dir.chdir(vagrant_path) do
             spinner "Triggering CoreOS Container Linux box update"
-            run_command('vagrant box update')
+            system('vagrant box update')
             spinner "Executing 'vagrant up'"
             run_command('vagrant up')
             spinner "'vagrant up' executed successfully"
