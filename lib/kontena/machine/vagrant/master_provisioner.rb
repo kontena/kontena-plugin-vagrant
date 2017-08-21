@@ -20,7 +20,7 @@ module Kontena
         def run!(opts)
           name = opts[:name] || generate_name
           version = opts[:version]
-          memory = opts[:memory] || 1024
+          memory = opts[:memory] || 512
           vault_secret = opts[:vault_secret]
           vault_iv = opts[:vault_iv]
           initial_admin_code = opts[:initial_admin_code]
