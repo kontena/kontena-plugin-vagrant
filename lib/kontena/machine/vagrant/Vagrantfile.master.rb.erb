@@ -102,7 +102,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     docker.vm.provider "virtualbox" do |vb|
       vb.name = "<%= name %>"
       vb.gui = false
-      vb.customize ["modifyvm", :id, "--memory", "512"]
+      vb.memory = <%= memory %>
       vb.auto_nat_dns_proxy = false
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "off" ]
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off" ]

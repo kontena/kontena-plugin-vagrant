@@ -30,6 +30,7 @@ module Kontena
           vars = {
             name: name,
             version: version,
+            cpus: opts[:cpus] || 1,
             memory: opts[:memory] || 1024,
             network_address: opts[:network_address],
             master_uri: opts[:master_uri],

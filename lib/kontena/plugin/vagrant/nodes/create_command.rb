@@ -6,6 +6,7 @@ module Kontena::Plugin::Vagrant::Nodes
     parameter "[NAME]", "Node name"
     option "--instances", "AMOUNT", "How many nodes will be created"
     option "--memory", "MEMORY", "How much memory node has"
+    option "--cpus", "CPUS", "Number of CPUs per node", default: 1
     option "--network-address", "IP", "First IP address for the node(s)", default: 'dhcp'
     option "--version", "VERSION", "Define installed Kontena version", default: 'latest'
     option "--coreos-channel", "CHANNEL", "CoreOS release channel", default: 'stable'
@@ -37,6 +38,7 @@ module Kontena::Plugin::Vagrant::Nodes
           name: name,
           instance_number: i + 1,
           network_address: ip_address ? ip_address.to_s : "dhcp",
+          cpus: cpus,
           memory: instance_memory,
           version: version,
           coreos_channel: coreos_channel
