@@ -5,15 +5,11 @@ rvm:
   - 2.4.2
   - 2.5.0
 before_install:
-  - rvm @global do gem uninstall bundler -a -x
-  - rvm @global do gem install bundler -v 1.12.5
   - sudo touch /usr/local/bin/vagrant && sudo chmod +x /usr/local/bin/vagrant
-cache:
-  directories:
-  - vendor/
+cache: bundler
 env:
   - secure: "AKXU+TV7xK0tZdtKq7ONJyLrrJfBNaPDMLvARHYPQlgHc0LDCaYSC3r+RZwIWMNBWYrAsT0A4wmLviUXex1gPvIJ9ej9bhUE0ch6xnFP1LUQG7UF1HjregG6zZqrPuxJ7fqJx3dATy2vV13BiIUmjkxRKeN76fQI/ISIkDhv2GHLGp8uuRxKBmxKFCX0azYzNOZtz8vSSF5iWmRbHjbc6XEP6s3OwkSU1FUCvXh5o+mVxA+yHufCoZnCZbGsw1Y+0+l/kIq+dypJrHBGrvu6xH5zJDddtwcJ9TS1Q4W7+XUTag5MrLDYlLoSBKDSXUkeGZ9Pv7fRhw0FZssOy8mBWVvM2Np2r7/p5yWqCoKQ9rvnhy1xAMVpwA6BzKzp47UV8DeSXywABO8rqtFDfimrh2FWViiEkLbMTH8YtykD1+OB6HLr/qPwogtBHAKdPhW3vHV4SM7+QzIUVHzzxYZES5lZGHiYZ9HGp4cGNtBQ0dwoCO11zeAVJXasjXzzBCn/TtlFAgS+xsephygk8YGzNvUBSwiMAd7vPt1ikm5R9RN4Vp8WEC0QyTNNVvG+Z8fuYC8x2KR16TYKOBFcYfBVMdDtoDJX45gIVxjGiLa9Dm2SCbyyeovI8o+6ryjSaSPE23ajxP7Xxx9nQXRGn14MyxDLndxpiZIMDoc18On+t9E="
-script: bundle install --path vendor/bundle && bundle exec rspec spec/
+script: bundle install && bundle exec rspec spec/
 deploy:
   provider: rubygems
   api_key: $GEM_TOKEN
