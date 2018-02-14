@@ -1,9 +1,9 @@
 language: ruby
 rvm:
-  - 2.1.10
-  - 2.2.6
-  - 2.3.3
-  - 2.4.1
+  - 2.2.8
+  - 2.3.6
+  - 2.4.2
+  - 2.5.0
 before_install:
   - rvm @global do gem uninstall bundler -a -x
   - rvm @global do gem install bundler -v 1.12.5
@@ -20,4 +20,4 @@ deploy:
   gem: kontena-plugin-vagrant
   on:
     tags: true
-    rvm: 2.4.1
+    rvm: 2.5.0
